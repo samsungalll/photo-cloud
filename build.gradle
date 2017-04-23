@@ -1,3 +1,21 @@
+def bmcsSDK = project.file('bmcs-sdk/lib/oracle-bmc-java-sdk-full-1.2.5.jar')
+def sdkDest = "bmcs-sdk"
+
+if (bmcsSDK.exists() == false) {
+	def sdkArchive = File.createTempFile("bmcsSDK","archive.zip")
+	sdkArchive << new URL("https://github.com/oracle/bmcs-java-sdk/releases/download/v1.2.5/oracle-bmcs-java-sdk.zip").openStream()
+
+	copy {
+		from zipTree(sdkArchive)
+		into sdkDest
+		include "**/*.jar"
+		exclude "**/*-sources.jar"
+		exclude "**/*-javadoc.jar"
+	}
+}
+
+def bmcsSDKDeps = project.fileTree('bmcs-sdk/third-party/lib')
+
 buildscript {
 	ext {
 		springBootVersion = '1.5.2.RELEASE'
@@ -24,5 +42,8 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-devtools')
+	compile files(bmcsSDK)
+	runtime files(bmcsSDKDeps)
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

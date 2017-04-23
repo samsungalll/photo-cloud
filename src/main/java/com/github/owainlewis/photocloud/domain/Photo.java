@@ -2,13 +2,14 @@ package com.github.owainlewis.photocloud.domain;
 
 public class Photo {
 
-    private final String path;
+    private final String fileName;
 
-    public Photo(String path) {
-        this.path = path;
+    public Photo(String fileName) {
+        this.fileName = fileName;
     }
 
-    public String getPath () {
-        return path;
+    public String getFileName () {
+        return fileName;
     }
+
 }
